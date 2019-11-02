@@ -23,6 +23,7 @@ class Song
         public:
             //Predetermined constructor
             Song();
+            Song(string artist, string title, int size);
 
 
             string getArtist() const;
@@ -38,6 +39,7 @@ class Song
             bool operator >(Song const &tune);
             bool operator ==(Song const &tune);
             bool operator <(Song const &tune);
+            ~Song();
 };
 
 
