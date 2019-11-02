@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <cstdlib>
 #include <cstddef>
 #include <time.h>
 #include <random>
@@ -47,7 +48,7 @@ int UtPod::addSong(Song const &s){
     if(memory > memSize) {
         return -1;
     } else {
-        auto *temp = new SongNode;
+        auto *temp = new SongNode();
         temp->s = s;
         temp->next = songs;
         songs = temp;
@@ -62,8 +63,8 @@ void UtPod::showSongList(){
 
     while(temp != nullptr){
 
-        cout<< "'" << temp->s.getTitle()<< "', ";
         cout<< temp->s.getArtist()<< ", ";
+        cout<< "'" << temp->s.getTitle()<< "', ";
         cout << temp->s.getSize()<< "MB"<< endl;
         temp = temp->next;
 
@@ -72,7 +73,13 @@ void UtPod::showSongList(){
 }
 
 void UtPod::clearMemory(){
-   delete songs;
+    SongNode *temp = songs;
+    while(songs != nullptr){
+	 songs = songs->next;
+	 delete temp;
+	 temp = songs;
+    }
+    cout << "MEMORY CLEARED"<<endl;
 }
 
 int UtPod::removeSong(Song const &s){
@@ -132,9 +139,8 @@ void UtPod::sortSongList(){
 }
 
 UtPod::~UtPod(){
-
+    delete songs->next;
     delete songs;
-
 }
 
 void UtPod::shuffle() {
@@ -145,10 +151,14 @@ void UtPod::shuffle() {
     for(p2 = songs; p2!= nullptr;p2 = p2->next ){
         numSongs++;
     }
+    if(numSongs<3){
+	return;
+    }
+
     srand(time(nullptr));
 
     for(p1 = songs; p1 != nullptr; p1 = p1->next){
-        for(i = rand()%(numSongs*3)+1; i > 0; i--){       //x3 to have a good random margin
+        for(i = rand()%(numSongs*5)+1; i > 0; i--){       //x3 to have a good random margin
             if(p2 == nullptr){
                 p2 = songs;
             }
