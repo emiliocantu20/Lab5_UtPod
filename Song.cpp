@@ -7,6 +7,12 @@
 
 Song::Song(){}
 
+Song::Song(string artist, string title, int size) {
+    setArtist(artist);
+    setTitle(title);
+    setSize(size);
+
+}
 void Song::setArtist(string &a){
     artist = a;
 }
@@ -46,9 +52,11 @@ bool Song::operator < (Song const &tune)
     return (getArtist() > tune.getArtist());
 }
 
+
 void Song::swap(Song &s)                //Credit to Professor Priebe
 {
     Song temp = s;
     s = *this;
     *this = temp;
 }
+    Song::~Song() = default;
